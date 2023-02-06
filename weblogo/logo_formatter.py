@@ -222,7 +222,7 @@ def eps_formatter(logodata: LogoData, logoformat: LogoFormat) -> bytes:
             assert logodata.entropy is not None
             assert logoformat.unit_name is not None
 
-            stack_height = logodata.entropy[seq_index] * std_units[logoformat.unit_name]
+            stack_height = logodata.entropy.iloc[seq_index] * std_units[logoformat.unit_name]
         else:
             stack_height = 1.0  # probability   # pragma: no cover
 

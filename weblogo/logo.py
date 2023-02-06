@@ -357,6 +357,8 @@ class LogoOptions:
         self.logo_end: Optional[int] = None
         self.scale_width = True
 
+        self.highlight_mut = False
+
         self.reverse_stacks = True  # If true, draw stacks with largest letters on top.
 
         for k, v in kwargs.items():
@@ -625,9 +627,15 @@ class LogoFormat(LogoOptions):
         if self.annotate is None:
             self.annotate: list = []
 
-            for i in range(self.seqlen):
-                index = i + self.first_index
-                if index % self.number_interval == 0:
+            for i, locus in enumerate(logodata.ppm.index):
+                index = locus#i + self.first_index
+                if self.highlight_mut:
+                    has_var = logodata.ppm.loc[index, :].max() < 1
+                    if has_var:
+                        self.annotate.append("%d" % index)
+                    else:
+                        self.annotate.append("")
+                elif i % self.number_interval == 0:
                     self.annotate.append("%d" % index)
                 else:
                     self.annotate.append("")
